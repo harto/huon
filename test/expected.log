@@ -1,0 +1,13 @@
+ [  0.018s] [huon.tests] debug 0
+ [  0.020s] [huon.tests] info 0
+ [  0.020s] [huon.tests] warn 0
+ [  0.020s] [huon.tests] error 0
+ [  0.021s] [huon.tests] info 1
+ [  0.021s] [huon.tests] warn 1
+ [  0.021s] [huon.tests] error 1
+ [  0.021s] [huon.tests] warn 2
+ [  0.021s] [huon.tests] error 2
+ [  0.021s] [huon.tests] error 3
+ [  0.022s] [huon.tests] {:foo "bar", :baz 42}
+ [  0.022s] [huon.tests] (a b c d foo yadda-yadda)
+ [  0.023s] [huon.tests] [object Object]

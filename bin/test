@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(cd $(dirname $0); pwd -P)"/..
+lein cljsbuild once
+
+expected=$(mktemp -t expected)
+actual=$(mktemp -t actual)
+
+trap "rm $expected $actual" EXIT
+
+elide_timestamps() {
+  sed -E 's/\[ *[0-9]+\.[0-9]+s\]/[...]/' $@
+}
+
+cat test/expected.log | elide_timestamps > $expected
+node target/test/tests.js 2>&1 | elide_timestamps > $actual
+
+echo "comparing expected with actual"
+diff --side-by-side $expected $actual
+echo 'ok'
