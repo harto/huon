@@ -15,6 +15,11 @@ A logging library for ClojureScript that wraps [`goog.debug.Logger`](https://clo
  * Highly configurable
 
 
+## Installation
+
+Add `[org.harto/huon "0.1.0"]` as a dependency in `project.clj`.
+
+
 ## Usage
 
 ```cljs
