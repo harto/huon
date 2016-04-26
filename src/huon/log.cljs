@@ -23,13 +23,16 @@
    :warn  Level/WARNING
    :error Level/SEVERE})
 
+(defn- get-logger [name]
+  (LogManager/getLogger name))
+
 (defn set-level!
   "Set a per-namespace logging level. This overrides the level defined by
   (set-root-level!)."
   [logger-or-name level]
   {:pre [(contains? levels level)]}
   (let [logger (if (string? logger-or-name)
-                 (LogManager/getLogger logger-or-name)
+                 (get-logger logger-or-name)
                  logger-or-name)]
     (.setLevel logger (levels level))))
 
