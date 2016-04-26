@@ -1,9 +1,11 @@
 (ns huon.tests
   (:require [cljs.test :refer-macros [run-tests]]
             [cljs.nodejs]
-            [huon.log :as log]))
+            [huon.log :as log]
+            [huon.tests-2]))
 
 (enable-console-print!)
+(log/enable!)
 
 (defn main []
   ;; check messages not logged below threshold
@@ -22,6 +24,12 @@
   (log/set-root-level! :debug)
   (log/debug {:foo "bar" :baz 42})
   (log/debug '(a b c d foo yadda-yadda))
-  (log/debug #js {:foo 42}))
+  (log/debug #js {:foo 42})
+
+  ;; check level override
+  (log/set-level! "huon.tests-2" :warn)
+  (log/info "should see this")
+  (huon.tests-2/log-info "shouldn't see this")
+  )
 
 (set! *main-cli-fn* main)

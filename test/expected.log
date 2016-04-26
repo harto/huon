@@ -11,3 +11,4 @@
  [  0.022s] [huon.tests] {:foo "bar", :baz 42}
  [  0.022s] [huon.tests] (a b c d foo yadda-yadda)
  [  0.023s] [huon.tests] [object Object]
+ [  0.023s] [huon.tests] should see this

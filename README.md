@@ -26,9 +26,13 @@ Add `[org.harto/huon "0.1.0"]` as a dependency in `project.clj`.
 (ns foo.bar
   (:require [huon.log :as log]))
 
-;; optional; defaults to :warn
-(log/set-root-level! :debug)
+;; required; once per app
+(log/enable!)
 
+;; optional; defaults to :warn
+(log/set-root-level! :info)
+
+(log/debug "an invisible message")
 (log/info "hello" "world")
 ```
 

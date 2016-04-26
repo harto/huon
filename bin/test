@@ -4,6 +4,8 @@ set -euo pipefail
 cd "$(cd $(dirname $0); pwd -P)"/..
 lein cljsbuild once
 
+echo "build completed successfully"
+
 expected=$(mktemp -t expected)
 actual=$(mktemp -t actual)
 
