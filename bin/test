@@ -6,8 +6,8 @@ lein cljsbuild once
 
 echo "build completed successfully"
 
-expected=$(mktemp -t expected)
-actual=$(mktemp -t actual)
+expected=$(mktemp -t expected.XXX)
+actual=$(mktemp -t actual.XXX)
 
 trap "rm $expected $actual" EXIT
 
