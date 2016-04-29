@@ -1,9 +1,9 @@
 (ns huon.log)
 
 (defmacro ^:private log [level args]
-  `(~'huon.log/log* ~(str *ns*)
-                    ~level
-                    #(clojure.string/join " " ~(mapv (fn [x] `(str ~x)) args))))
+  `(log* ~(str *ns*)
+         ~level
+         #(clojure.string/join " " ~(mapv (fn [x] `(str ~x)) args))))
 
 (defmacro debug
   "Evaluate and log args if level >= :debug"
