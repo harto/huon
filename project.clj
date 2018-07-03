@@ -3,9 +3,9 @@
   :url "https://github.com/harto/huon"
   :license {:name "MIT"
             :url "https://github.com/harto/huon/blob/master/LICENSE"}
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.7.228"]]
-  :profiles {:dev {:plugins [[lein-cljsbuild "1.1.3"
+  :dependencies [[org.clojure/clojure "1.9.0"]
+                 [org.clojure/clojurescript "1.10.339"]]
+  :profiles {:dev {:plugins [[lein-cljsbuild "1.1.7"
                               :exclusions [[org.clojure/clojure]]]]
                    :cljsbuild {:builds [{:id "test"
                                          :source-paths ["src" "test"]
