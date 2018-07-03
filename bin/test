@@ -6,18 +6,14 @@ lein cljsbuild once
 
 echo "build completed successfully"
 
-expected=$(mktemp -t expected.XXX)
-actual=$(mktemp -t actual.XXX)
-
-trap "rm $expected $actual" EXIT
-
 elide_timestamps() {
   sed -E 's/\[ *[0-9]+\.[0-9]+s\]/[...]/' $@
 }
 
-cat test/expected.log | elide_timestamps > $expected
-node target/test/tests.js 2>&1 | elide_timestamps > $actual
-
 echo "comparing expected with actual"
-diff --side-by-side $expected $actual
+
+diff --side-by-side \
+  <(cat test/expected.log | elide_timestamps) \
+  <(node target/test/tests.js 2>&1 | elide_timestamps)
+  
 echo 'ok'
