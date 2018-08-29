@@ -1,6 +1,6 @@
 # Huon [![Build Status](https://travis-ci.org/harto/huon.svg?branch=master)](https://travis-ci.org/harto/huon)
 
-A logging library for ClojureScript that wraps [`goog.debug.Logger`](https://closure-library.googlecode.com/git-history/docs/namespace_goog_log.html).
+A logging library for ClojureScript that wraps [`goog.debug.Logger`](https://google.github.io/closure-library/api/goog.debug.Logger.html).
 
 
 ## Goals
