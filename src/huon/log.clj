@@ -3,7 +3,8 @@
 (defmacro ^:private log [level args]
   `(log* ~(str *ns*)
          ~level
-         #(clojure.string/join " " ~(mapv (fn [x] `(str ~x)) args))))
+         #(str "[" (clojure.string/upper-case (name ~level))  "] "
+               (clojure.string/join " " ~(mapv (fn [x] `(str ~x)) args)))))
 
 (defmacro debug
   "Evaluate and log args if level >= :debug"
