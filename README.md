@@ -17,7 +17,7 @@ A logging library for ClojureScript that wraps [`goog.debug.Logger`](https://goo
 
 ## Installation
 
-Add `[org.harto/huon "0.2.1"]` as a dependency in `project.clj`.
+Add `[org.harto/huon "0.5.0"]` as a dependency in `project.clj`.
 
 
 ## Usage
