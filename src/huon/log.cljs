@@ -15,6 +15,7 @@
   "Start capturing console output. Apps that want to display log output should
   call this function, but libraries that depend on Huon for logging should not."
   []
+  (set! (.-showLoggerName (.getFormatter console)) false)
   (.setCapturing console true))
 
 (def ^:private levels

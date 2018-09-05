@@ -38,7 +38,7 @@ Add `[org.harto/huon "0.2.1"]` as a dependency in `project.clj`.
 
 Output:
 ```
- [  0.021s] [foo.bar] hello world
+ [  0.021s] [foo.bar:11] [INFO] hello world
 ```
 
 Available macros are `debug`, `info`, `warn` and `error`.
