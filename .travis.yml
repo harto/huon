@@ -1,2 +1,2 @@
 language: clojure
-script: bin/test
+script: bin/run-tests

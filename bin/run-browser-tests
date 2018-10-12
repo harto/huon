@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+OPTIMIZATION_LEVELS=("$@")
+if (( ${#OPTIMIZATION_LEVELS[@]} == 0 )); then
+  OPTIMIZATION_LEVELS=(none whitespace simple advanced)
+fi
+
+BUILDS=("${OPTIMIZATION_LEVELS[@]/#/test-browser-}")
+
+cd "$(cd "$(dirname "$0")"; pwd -P)"/..
+
+yarn install --silent --pure-lockfile
+
+test_build() {
+  local build
+  local html_path
+  build="$1"
+  html_path="target/${build}.html"
+  sed "s#%SRC%#./${build}.js#" test/index.html > "$html_path"
+  echo
+  echo "testing $build (via $html_path)"
+  bin/diff-logs test/expected.log <(bin/capture-browser-console-output "$html_path")
+}
+
+lein cljsbuild once "${BUILDS[@]}"
+
+err=
+for build in "${BUILDS[@]}"; do
+  if test_build "$build"; then
+    echo "ok"
+  else
+    echo "error!"
+    err=1
+  fi
+done
+test -z "$err"

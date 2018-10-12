@@ -44,6 +44,11 @@ Output:
 Available macros are `debug`, `info`, `warn` and `error`.
 
 
+## Development
+
+The automated test suite is runnable via `bin/run-tests`.
+
+
 ## License
 
 MIT; see [LICENSE](./LICENSE).

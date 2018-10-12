@@ -1,13 +1,11 @@
 (ns huon.tests
-  (:require [cljs.test :refer-macros [run-tests]]
-            [cljs.nodejs]
-            [huon.log :as log]
+  (:require [huon.log :as log]
             [huon.tests-2]))
 
 (enable-console-print!)
 (log/enable!)
 
-(defn main []
+(defn ^:export main []
   ;; check messages not logged below threshold
   (doseq [[i level] (map-indexed vector [:debug :info :warn :error])]
     (log/set-root-level! level)

@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+OPTIMIZATION_LEVELS=("$@")
+if (( ${#OPTIMIZATION_LEVELS[@]} == 0 )); then
+  OPTIMIZATION_LEVELS=(none simple advanced)
+fi
+
+BUILDS=("${OPTIMIZATION_LEVELS[@]/#/test-nodejs-}")
+
+cd "$(cd "$(dirname "$0")"; pwd -P)"/..
+
+test_build() {
+  local build
+  local js_path
+  build="$1"
+  js_path="$build.js"
+  echo
+  echo "testing $build (via $js_path)"
+  bin/diff-logs test/expected.log <(cd target && node "$js_path" 2>&1)
+}
+
+lein cljsbuild once "${BUILDS[@]}"
+
+err=
+for build in "${BUILDS[@]}"; do
+  if test_build "$build"; then
+    echo "ok"
+  else
+    echo "error!"
+    err=1
+  fi
+done
+test -z "$err"
