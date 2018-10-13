@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+elide_timestamps() {
+  sed -E 's/\[ *[0-9]+\.[0-9]+s\]/[...]/' "$@"
+}
+
+diff --side-by-side <(elide_timestamps "$1") <(elide_timestamps "$2")

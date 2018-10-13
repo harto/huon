@@ -1,14 +1,14 @@
- [  0.018s] [huon.tests:14] [DEBUG] debug 0
- [  0.020s] [huon.tests:15] [INFO] info 0
- [  0.020s] [huon.tests:16] [WARN] warn 0
- [  0.020s] [huon.tests:17] [ERROR] error 0
- [  0.021s] [huon.tests:15] [INFO] info 1
- [  0.021s] [huon.tests:16] [WARN] warn 1
- [  0.021s] [huon.tests:17] [ERROR] error 1
- [  0.021s] [huon.tests:16] [WARN] warn 2
- [  0.021s] [huon.tests:17] [ERROR] error 2
- [  0.021s] [huon.tests:17] [ERROR] error 3
- [  0.022s] [huon.tests:25] [DEBUG] {:foo "bar", :baz 42}
- [  0.022s] [huon.tests:26] [DEBUG] (a b c d foo yadda-yadda)
- [  0.023s] [huon.tests:27] [DEBUG] [object Object]
- [  0.023s] [huon.tests:31] [INFO] should see this
+ [  0.018s] [huon.tests:12] [DEBUG] debug 0
+ [  0.020s] [huon.tests:13] [INFO] info 0
+ [  0.020s] [huon.tests:14] [WARN] warn 0
+ [  0.020s] [huon.tests:15] [ERROR] error 0
+ [  0.021s] [huon.tests:13] [INFO] info 1
+ [  0.021s] [huon.tests:14] [WARN] warn 1
+ [  0.021s] [huon.tests:15] [ERROR] error 1
+ [  0.021s] [huon.tests:14] [WARN] warn 2
+ [  0.021s] [huon.tests:15] [ERROR] error 2
+ [  0.021s] [huon.tests:15] [ERROR] error 3
+ [  0.022s] [huon.tests:23] [DEBUG] {:foo "bar", :baz 42}
+ [  0.022s] [huon.tests:24] [DEBUG] (a b c d foo yadda-yadda)
+ [  0.023s] [huon.tests:25] [DEBUG] [object Object]
+ [  0.023s] [huon.tests:29] [INFO] should see this

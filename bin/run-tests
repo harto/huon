@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(cd "$(dirname "$0")"; pwd -P)"
+
+err=
+echo "Running tests for node.js target..."
+./run-node-tests || err=1
+echo "Running tests for browser target..."
+./run-browser-tests || err=1
+test -z "$err"
