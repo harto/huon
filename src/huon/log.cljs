@@ -15,6 +15,9 @@
   "Start capturing console output. Apps that want to display log output should
   call this function, but libraries that depend on Huon for logging should not."
   []
+  ;; Ensure gclosure logging works in node.js with various compiler
+  ;; optimizations enabled. See https://dev.clojure.org/jira/browse/CLJS-2930.
+  (.setConsole goog.debug.Console js/console)
   (set! (.-showLoggerName (.getFormatter console)) false)
   (.setCapturing console true))
 
