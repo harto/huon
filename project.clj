@@ -1,5 +1,5 @@
-(defproject org.harto/huon "0.5.1"
-  :description "ClojureScript interface to goog.debug.Logger"
+(defproject org.harto/huon "1.0.0-SNAPSHOT"
+  :description "ClojureScript wrapper around console logger"
   :url "https://github.com/harto/huon"
   :license {:name "MIT"
             :url "https://github.com/harto/huon/blob/master/LICENSE"}
