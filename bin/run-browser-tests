@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OPTIMIZATION_LEVELS=("$@")
-if (( ${#OPTIMIZATION_LEVELS[@]} == 0 )); then
-  OPTIMIZATION_LEVELS=(none whitespace simple advanced)
+optimization_levels=("$@")
+if (( ${#optimization_levels[@]} == 0 )); then
+  optimization_levels=(none whitespace simple advanced)
 fi
 
-BUILDS=("${OPTIMIZATION_LEVELS[@]/#/test-browser-}")
+builds=("${optimization_levels[@]/#/test-browser-}")
 
 cd "$(cd "$(dirname "$0")"; pwd -P)"/..
 
@@ -23,10 +23,10 @@ test_build() {
   bin/diff-logs test/expected.log <(bin/capture-browser-console-output "$html_path")
 }
 
-lein cljsbuild once "${BUILDS[@]}"
+lein cljsbuild once "${builds[@]}"
 
 err=
-for build in "${BUILDS[@]}"; do
+for build in "${builds[@]}"; do
   if test_build "$build"; then
     echo "ok"
   else
