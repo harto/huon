@@ -1,54 +1,91 @@
 (ns huon.log
-  (:require [clojure.string] ; required by macros
-            [goog.debug.Console]
-            [goog.debug.Logger.Level :as Level]
-            [goog.debug.LogManager :as LogManager])
-  ;; automatically include in requiring namespaces
-  (:require-macros huon.log))
+  (:require [clojure.string :as str])  ; N.B.: also required by macros
+  (:require-macros huon.log))          ; auto-include in requiring namespaces
 
-(LogManager/initialize)
+(defonce ^:private levels
+  {:debug 1
+   :info 2
+   :warn 3
+   :error 4})
 
-(defonce console
-  (goog.debug.Console.))
+(defonce ^:private config
+  (atom {:root-level :warn
+         :logger-levels {}
+         ;; Don't print name of log level by default, because messages are often
+         ;; colour-coded to indicate level in browser consoles.
+         :show-level? false
+         ;; Stringify message arguments by default. This is a reasonable setting
+         ;; for consoles that don't know how to format ClojureScript objects in
+         ;; a readable way. Developers using extensions like cljs-devtools may
+         ;; want to set this to `nil`, so that arguments are passed through
+         ;; untouched and formatted by that extension.
+         :format str}))
 
-(defn enable!
-  "Start capturing console output. Apps that want to display log output should
-  call this function, but libraries that depend on Huon for logging should not."
-  []
-  ;; Ensure gclosure logging works in node.js with various compiler
-  ;; optimizations enabled. See https://dev.clojure.org/jira/browse/CLJS-2930.
-  (.setConsole goog.debug.Console js/console)
-  (set! (.-showLoggerName (.getFormatter console)) false)
-  (.setCapturing console true))
+(defonce ^:private logger-levels-cache
+  (atom {}))
 
-(def ^:private levels
-  {:debug Level/FINE
-   :info  Level/INFO
-   :warn  Level/WARNING
-   :error Level/SEVERE})
+(defn configure!
+  "Configures logging for your application.
 
-(defn- get-logger [name]
-  (LogManager/getLogger name))
+  Available options are:
+    :root-level - the default logging threshold
+    :logger-levels - a mapping of namespace names to log levels
+    :show-level? - whether to print the log level alongside individual messages
+    :format - a function to optionally format each message component
 
-(defn set-level!
-  "Set a per-namespace logging level. This overrides the level defined by
-  (set-root-level!)."
-  [logger-or-name level]
-  {:pre [(contains? levels level)]}
-  (let [logger (if (string? logger-or-name)
-                 (get-logger logger-or-name)
-                 logger-or-name)]
-    (.setLevel logger (levels level))))
+  See `config` for defaults."
+  [opts]
+  (swap! config merge opts)
+  (reset! logger-levels-cache {}))
 
 (defn set-root-level!
-  "Set the global logging threshold. This can be overridden on a per-namespace
-  basis with (set-level!)."
+  "Sets the global logging threshold. This can also be configured with the
+  :root-level initialization option."
   [level]
-  (set-level! (LogManager/getRoot) level))
-
-(defn log* [logger-name level msg-fn]
   {:pre [(contains? levels level)]}
-  (let [logger (get-logger logger-name)
-        glevel (levels level)]
-    (if (.isLoggable logger glevel)
-      (.log logger glevel msg-fn))))
+  (swap! config assoc :root-level level)
+  (reset! logger-levels-cache {}))
+
+(defn set-level!
+  "Sets a per-namespace logging level. This can also be configured with the
+  :logger-levels initialization option."
+  ([level]
+   (set-level! (str *ns*) level))
+  ([logger-name level]
+   {:pre [(string? logger-name)
+          (contains? levels level)]}
+   (swap! config assoc-in [:logger-levels logger-name] level)
+   (reset! logger-levels-cache {})))
+
+(defn- parent [logger]
+  (when-let [last-segment-pos (str/last-index-of logger #"\.")]
+    (subs logger 0 last-segment-pos)))
+
+(defn- configured-level [logger]
+  (let [configured-levels (:logger-levels @config)]
+    (loop [logger logger]
+      (or (configured-levels logger)
+          (if-let [p (parent logger)]
+            (recur p)
+            (:root-level @config))))))
+
+(defn- log?
+  "Test if logger should log a message at the given level."
+  [logger msg-level]
+  (let [msg-threshold (levels msg-level)]
+    (if-let [cached-level (@logger-levels-cache logger)]
+      (>= msg-threshold (levels cached-level))
+      (let [level (configured-level logger)]
+        (swap! logger-levels-cache assoc logger level)
+        (>= msg-threshold (levels level))))))
+
+(defn log* [logger msg-level formatted-src formatted-level eval-args]
+  {:pre [(contains? levels msg-level)]}
+  (when (log? logger msg-level)
+    (let [args (eval-args)
+          format-arg (:format @config)
+          formatted-args (if format-arg (map format-arg args) args)
+          msg (if (:show-level? @config)
+                (conj formatted-args formatted-level formatted-src)
+                (conj formatted-args formatted-src))]
+      (apply (aget js/console (name msg-level)) msg))))

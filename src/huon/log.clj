@@ -1,33 +1,33 @@
 (ns huon.log)
 
-(defmacro ^:private log [level args]
-  (let [origin-meta# (-> &form meta :origin)
-        origin#      (str (:ns origin-meta#) ":" (:line origin-meta#))]
+(defn- src-meta [form]
+  {:ns *ns*, :line (:line (meta form))})
+
+(defmacro log [level & msg]
+  "Evaluate and log `msg` if configured level >= `level`."
+  (let [src# (or (::src (meta &form)) (src-meta &form))]
     `(log* ~(str *ns*)
            ~level
-           #(str "[" ~origin# "] "
-                 "[" (clojure.string/upper-case (name ~level))  "] "
-                 (clojure.string/join " " ~(mapv (fn [x] `(str ~x)) args))))))
-
-(defn- origin-meta [form]
-  {:origin {:ns *ns* :line (:line (meta form))}})
+           ~(format "[%s:%s]" (:ns src#) (:line src#))
+           (str "[" (clojure.string/upper-case (name ~level)) "]")
+           (fn [] (list ~@msg)))))
 
 (defmacro debug
-  "Evaluate and log args if level >= :debug"
-  [& args]
-  (with-meta `(log :debug ~args) (origin-meta &form)))
+  "Evaluate and log `msg` if configured level >= `:debug`"
+  [& msg]
+  (with-meta `(log :debug ~@msg) {::src (src-meta &form)}))
 
 (defmacro info
-  "Evaluate and log args if level >= :info"
-  [& args]
-  (with-meta `(log :info ~args) (origin-meta &form)))
+  "Evaluate and log `msg` if configured level >= `:info`"
+  [& msg]
+  (with-meta `(log :info ~@msg) {::src (src-meta &form)}))
 
 (defmacro warn
-  "Evaluate and log args if level >= :warn"
-  [& args]
-  (with-meta `(log :warn ~args) (origin-meta &form)))
+  "Evaluate and log `msg` if configured level >= `:warn`"
+  [& msg]
+  (with-meta `(log :warn ~@msg) {::src (src-meta &form)}))
 
 (defmacro error
-  "Evaluate and log args if level >= :error"
-  [& args]
-  (with-meta `(log :error ~args) (origin-meta &form)))
+  "Evaluate and log `msg` if configured level >= `:error`"
+  [& msg]
+  (with-meta `(log :error ~@msg) {::src (src-meta &form)}))

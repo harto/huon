@@ -1,11 +1,10 @@
 # Huon [![Build Status](https://travis-ci.org/harto/huon.svg?branch=master)](https://travis-ci.org/harto/huon)
 
-A logging library for ClojureScript that wraps [`goog.debug.Logger`](https://google.github.io/closure-library/api/goog.debug.Logger.html).
+A console logging library for ClojureScript.
 
 
 ## Goals
 
- * Leverage GClosure functionality
  * Lazy message evaluation
  * Simple API
 
@@ -17,7 +16,7 @@ A logging library for ClojureScript that wraps [`goog.debug.Logger`](https://goo
 
 ## Installation
 
-Add `[org.harto/huon "0.5.1"]` as a dependency in `project.clj`.
+Add `[org.harto/huon "1.0.0-SNAPSHOT"]` as a dependency in `project.clj`.
 
 
 ## Usage
@@ -26,11 +25,8 @@ Add `[org.harto/huon "0.5.1"]` as a dependency in `project.clj`.
 (ns foo.bar
   (:require [huon.log :as log]))
 
-;; required; once per app
-(log/enable!)
-
 ;; optional; defaults to :warn
-(log/set-root-level! :info)
+(log/configure! {:root-level :info})
 
 (log/debug "an invisible message")
 (log/info "hello" "world")
@@ -38,10 +34,21 @@ Add `[org.harto/huon "0.5.1"]` as a dependency in `project.clj`.
 
 Output:
 ```
- [  0.021s] [foo.bar:11] [INFO] hello world
+[foo.bar:8] hello world
 ```
 
-Available macros are `debug`, `info`, `warn` and `error`.
+Available logging macros are `debug`, `info`, `warn` and `error`.
+
+Other API functions are:
+ - `(configure! opts)` - set logging configuration according to options
+ - `(set-root-level! level)` - reset the root logger level (e.g. `(set-root-level! :error)`)
+ - `(set-level! logger-name level)` - reset a logger level (e.g. `(set-level! "foo.bar" :warn)`)
+
+Configuration options are:
+ - `:show-level?` - whether to print the log level alongside each message
+ - `:format` - a function to customize formatting of each message argument
+ - `:root-level` - the global logging threshold (default: `:warn`)
+ - `:logger-levels` - a mapping of namespace names to log levels (e.g. `{"foo" :info, "foo.bar" :debug}`)
 
 
 ## Development

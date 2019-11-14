@@ -1,14 +1,22 @@
- [  0.018s] [huon.tests:12] [DEBUG] debug 0
- [  0.020s] [huon.tests:13] [INFO] info 0
- [  0.020s] [huon.tests:14] [WARN] warn 0
- [  0.020s] [huon.tests:15] [ERROR] error 0
- [  0.021s] [huon.tests:13] [INFO] info 1
- [  0.021s] [huon.tests:14] [WARN] warn 1
- [  0.021s] [huon.tests:15] [ERROR] error 1
- [  0.021s] [huon.tests:14] [WARN] warn 2
- [  0.021s] [huon.tests:15] [ERROR] error 2
- [  0.021s] [huon.tests:15] [ERROR] error 3
- [  0.022s] [huon.tests:23] [DEBUG] {:foo "bar", :baz 42}
- [  0.022s] [huon.tests:24] [DEBUG] (a b c d foo yadda-yadda)
- [  0.023s] [huon.tests:25] [DEBUG] [object Object]
- [  0.023s] [huon.tests:29] [INFO] should see this
+[huon.tests:12] (log/debug …) logs :debug messages
+[huon.tests:13] (log/info …) logs :debug messages
+[huon.tests:14] (log/warn …) logs :debug messages
+[huon.tests:15] (log/error …) logs :debug messages
+[huon.tests:17] (log/log :debug …) logs :debug messages
+[huon.tests:13] (log/info …) logs :info messages
+[huon.tests:14] (log/warn …) logs :info messages
+[huon.tests:15] (log/error …) logs :info messages
+[huon.tests:17] (log/log :info …) logs :info messages
+[huon.tests:14] (log/warn …) logs :warn messages
+[huon.tests:15] (log/error …) logs :warn messages
+[huon.tests:17] (log/log :warn …) logs :warn messages
+[huon.tests:15] (log/error …) logs :error messages
+[huon.tests:17] (log/log :error …) logs :error messages
+[huon.tests:25] {:foo "bar", :baz 42}
+[huon.tests:26] (a b c d foo yadda-yadda)
+[huon.tests:27] [object Object]
+[huon.tests:32] [DEBUG] <- it's debug
+[huon.tests:32] [INFO] <- it's info
+[huon.tests:32] [WARN] <- it's warn
+[huon.tests:32] [ERROR] <- it's error
+[huon.tests:37] should see this
