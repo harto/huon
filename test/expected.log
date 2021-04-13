@@ -20,3 +20,4 @@
 [huon.tests:32] [WARN] <- it's warn
 [huon.tests:32] [ERROR] <- it's error
 [huon.tests:37] should see this
+[huon.tests:41] an expensive operation: […]ms

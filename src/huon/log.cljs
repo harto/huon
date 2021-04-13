@@ -79,6 +79,8 @@
         (swap! logger-levels-cache assoc logger level)
         (>= msg-threshold (levels level))))))
 
+;; Functions referenced by macros
+
 (defn log* [logger msg-level formatted-src formatted-level eval-args]
   {:pre [(contains? levels msg-level)]}
   (when (log? logger msg-level)
@@ -89,3 +91,9 @@
                 (conj formatted-args formatted-level formatted-src)
                 (conj formatted-args formatted-src))]
       (apply (aget js/console (name msg-level)) msg))))
+
+(defn time* [label eval-body]
+  (.time js/console label)
+  (let [res (eval-body)]
+    (.timeEnd js/console label)
+    res))

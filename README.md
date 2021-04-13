@@ -1,6 +1,6 @@
 # Huon [![Build Status](https://travis-ci.org/harto/huon.svg?branch=master)](https://travis-ci.org/harto/huon)
 
-A console logging library for ClojureScript.
+A console.log wrapper for ClojureScript.
 
 
 ## Goals
@@ -16,10 +16,10 @@ A console logging library for ClojureScript.
 
 ## Installation
 
-Add `[org.harto/huon "1.0.0-SNAPSHOT"]` as a dependency in `project.clj`.
+Add `[org.harto/huon "1.0.0-SNAPSHOT"]` as a dependency in `project.clj` (or similar).
 
 
-## Usage
+## Basic usage
 
 ```cljs
 (ns foo.bar
@@ -39,14 +39,32 @@ Output:
 
 Available logging macros are `debug`, `info`, `warn` and `error`.
 
-Other API functions are:
+
+## `time` macro
+
+The `time` macro wraps `console.time` / `console.timeEnd` for basic profiling:
+```cljs
+(log/time "reticulating splines"
+  (reticulate-splines))
+```
+
+Output:
+```
+[foo.bar:27] reticulating splines: 37.192ms
+```
+
+
+## Additional API functions
+
  - `(configure! opts)` - set logging configuration according to options
  - `(set-root-level! level)` - reset the root logger level (e.g. `(set-root-level! :error)`)
  - `(set-level! logger-name level)` - reset a logger level (e.g. `(set-level! "foo.bar" :warn)`)
 
-Configuration options are:
- - `:show-level?` - whether to print the log level alongside each message
- - `:format` - a function to customize formatting of each message argument
+
+## Configuration options
+
+ - `:show-level?` - whether to print the log level alongside each message (default: `false`)
+ - `:format` - a function to customize formatting of each message argument (default: `str`)
  - `:root-level` - the global logging threshold (default: `:warn`)
  - `:logger-levels` - a mapping of namespace names to log levels (e.g. `{"foo" :info, "foo.bar" :debug}`)
 

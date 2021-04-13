@@ -1,4 +1,5 @@
-(ns huon.log)
+(ns huon.log
+  (:refer-clojure :exclude [time]))
 
 (defn- src-meta [form]
   {:ns *ns*, :line (:line (meta form))})
@@ -31,3 +32,12 @@
   "Evaluate and log `msg` if configured level >= `:error`"
   [& msg]
   (with-meta `(log :error ~@msg) {::src (src-meta &form)}))
+
+;; Additional console emulation
+
+(defmacro time
+  "Report execution time of `body`."
+  [label & body]
+  (let [{:keys [ns line]} (src-meta &form)
+        full-label (format "[%s:%s] %s" ns line label)]
+    `(time* ~full-label (fn [] (do ~@body)))))

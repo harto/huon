@@ -35,6 +35,10 @@
   ;; check level override
   (log/set-level! "huon.tests-2" :warn)
   (log/info "should see this")
-  (huon.tests-2/log-info "shouldn't see this"))
+  (huon.tests-2/log-info "shouldn't see this")
+
+  ;; timing API
+  (log/time "an expensive operation"
+    (+ 1 1)))
 
 (set! *main-cli-fn* main)
