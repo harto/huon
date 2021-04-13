@@ -5,10 +5,10 @@
 
 (defmacro log [level & msg]
   "Evaluate and log `msg` if configured level >= `level`."
-  (let [src# (or (::src (meta &form)) (src-meta &form))]
-    `(log* ~(str *ns*)
+  (let [{:keys [ns line]} (or (::src (meta &form)) (src-meta &form))]
+    `(log* ~(str ns)
            ~level
-           ~(format "[%s:%s]" (:ns src#) (:line src#))
+           ~(format "[%s:%s]" ns line)
            (str "[" (clojure.string/upper-case (name ~level)) "]")
            (fn [] (list ~@msg)))))
 
